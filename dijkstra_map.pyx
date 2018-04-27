@@ -41,6 +41,10 @@ cdef bint _update_entry(Py_ssize_t i, Py_ssize_t j,
     cdef double d = initial
     cdef double l = initial
     cdef double r = initial
+    cdef double lu = initial
+    cdef double ld = initial
+    cdef double ru = initial
+    cdef double rd = initial
     cdef double new = initial
 
     if i > 0 and current >= dmap[i - 1, j] + 2 :
@@ -51,8 +55,18 @@ cdef bint _update_entry(Py_ssize_t i, Py_ssize_t j,
         d = dmap[i, j - 1] + 1
     if j < dmap.shape[1] - 1 and current >= dmap[i, j + 1] + 2:
         u = dmap[i, j + 1] + 1
+    # Diagonals
+    if i > 0 and j > 0 and current >= dmap[i - 1, j] + 2:
+        ld = dmap[i - 1, j - 1] + 1
+    if i > 0 and j < dmap.shape[1] - 1 and current >= dmap[i - 1, j + 1] + 2:
+        lu = dmap[i - 1, j + 1] + 1
+    if i < dmap.shape[1] - 1 and j > 0 and current >= dmap[i + 1, j - 1] + 2:
+        rd = dmap[i + 1, j - 1] + 1
+    if (i < dmap.shape[1] - 1 and j < dmap.shape[1] - 1 and
+        current >= dmap[i + 1, j + 1] + 2):
+        ru = dmap[i + 1, j + 1] + 1
 
-    new = min(u, d, l, r)
+    new = min(u, d, l, r, ld, lu, rd, ru)
     if new <= current:
         dmap[i, j] = new
         return 1
