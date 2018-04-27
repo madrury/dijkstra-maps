@@ -4,8 +4,8 @@ cimport numpy as np
 
 def build_map(long [:, :] dmap, np.uint8_t [:, :] walkable, 
               long goal=0, long initial=999):
-    cdef bint updated = False
-    while not updated:
+    cdef bint updated = True
+    while updated:
         updated = update(dmap, walkable, goal, initial)
     return np.array(dmap)
 
