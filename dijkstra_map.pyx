@@ -1,16 +1,18 @@
 import numpy as np
 cimport numpy as np
-
+cimport cython
 
 def build_map(long [:, :] dmap, np.uint8_t [:, :] walkable, 
-              long goal=0, long initial=999):
+              long initial=999):
     cdef bint updated = True
     while updated:
-        updated = update(dmap, walkable, goal, initial)
+        updated = update(dmap, walkable, initial)
     return np.array(dmap)
 
-def update(long [:, :] dmap, np.uint8_t [:, :] walkable, 
-           long goal=0, long initial=999):
+@cython.boundscheck(False)  # Deactivate bounds checking
+@cython.wraparound(False)
+cdef bint update(long [:, :] dmap, np.uint8_t [:, :] walkable, 
+           long initial=999):
     cdef Py_ssize_t i, j
     cdef bint updated = False
     for i in range(dmap.shape[0]):
@@ -19,7 +21,9 @@ def update(long [:, :] dmap, np.uint8_t [:, :] walkable,
                 updated = update_entry(i, j, dmap, initial) or updated
     return updated 
 
-def update_entry(Py_ssize_t i, Py_ssize_t j, long [:, :] dmap, long initial):
+@cython.boundscheck(False)  # Deactivate bounds checking
+@cython.wraparound(False)
+cdef bint update_entry(Py_ssize_t i, Py_ssize_t j, long [:, :] dmap, long initial):
     cdef long u = initial
     cdef long d = initial
     cdef long l = initial
@@ -38,6 +42,6 @@ def update_entry(Py_ssize_t i, Py_ssize_t j, long [:, :] dmap, long initial):
     new = min(u, d, l, r)
     dmap[i, j] = new
     if new != initial:
-        return True
+        return 1
     else:
-        return False
+        return 0
