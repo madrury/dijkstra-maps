@@ -5,7 +5,6 @@ cimport cython
 
 def build_map(dmap, walkable, initial=999):
     dmap = dmap.astype(np.float64, copy=False)
-    print(dmap)
     walkable = walkable.astype(np.uint8, copy=False)
     return _build_map(dmap, walkable, initial)
 
