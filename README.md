@@ -1,7 +1,7 @@
 Dijkstra Maps
 -------------
 
-This repository contains an implementation of Dijkstra Maps, as described [here](http://www.roguebasin.com/index.php?title=The_Incredible_Power_of_Dijkstra_Maps) and [here](http://www.roguebasin.com/index.php?title=Dijkstra_Maps_Visualized) in Cython.
+This repository contains an implementation of Dijkstra Maps, as described [here](http://www.roguebasin.com/index.php?title=The_Incredible_Power_of_Dijkstra_Maps) and [here](http://www.roguebasin.com/index.php?title=Dijkstra_Maps_Visualized).  The algorithm is implemented in Cython.
 
 Setup
 -----
@@ -70,3 +70,9 @@ array([[999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999],
        [999, 999,   9,   8,   8,   9,  10,  11,  12,  13, 999, 999],
        [999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999]])
 ```
+
+References
+----------
+
+[The Incredible Power of Dijkstra Maps](http://www.roguebasin.com/index.php?title=The_Incredible_Power_of_Dijkstra_Maps)
+[Dijkstra Maps Visualized](http://www.roguebasin.com/index.php?title=Dijkstra_Maps_Visualized)
