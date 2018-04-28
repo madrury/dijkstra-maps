@@ -4,6 +4,9 @@ cimport cython
 
 
 def build_map(dmap, walkable, initial=999):
+    if dmap.shape != walkable.shape:
+        raise ValueError(f"dmap (shape {dmap.shape}) and walkable "
+                         f"(shape {walkable.shape}) must have the same shape.")
     dmap = dmap.astype(np.float64, copy=False)
     walkable = walkable.astype(np.uint8, copy=False)
     return _build_map(dmap, walkable, initial)
