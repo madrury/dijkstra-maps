@@ -28,10 +28,18 @@ class DijkstraMap:
         jmin = max(0, center[1] - radius)
         jmax = min(center[1] + radius + 1, self.walkable.shape[1])
         if center[0] - radius >= 0:
-            self.dmap[center[0] - radius, jmin:jmax] = distance
+            self.dmap[center[0] - radius, jmin:jmax] = np.where(
+                self.walkable[center[0] - radius, jmin:jmax],
+                distance, self.initial)
         if center[0] + radius < self.walkable.shape[0]:
-            self.dmap[center[0] + radius, jmin:jmax] = distance
+            self.dmap[center[0] + radius, jmin:jmax] = np.where(
+                self.walkable[center[0] + radius, jmin:jmax],
+                distance, self.initial)
         if center[1] - radius >= 0:
-            self.dmap[imin:imax, center[1] - radius] = distance
+            self.dmap[imin:imax, center[1] - radius] = np.where(
+                self.walkable[imin:imax, center[1] - radius],
+                distance, self.initial)
         if center[1] + radius < self.walkable.shape[1]:
-            self.dmap[imin:imax, center[1] + radius] = distance
+            self.dmap[imin:imax, center[1] + radius] = np.where(
+                self.walkable[imin:imax, center[1] + radius],
+                distance, self.initial)

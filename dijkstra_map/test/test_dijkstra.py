@@ -94,6 +94,22 @@ def test_bottom_corner_square():
         [ 1.,  0.,  1.,  2.]]) 
     assert np.all(dm.dmap == result)
 
+def test_simple_square_with_walkable_mask():
+    walkable = np.ones((7, 7)).astype(np.uint8)
+    walkable[:3, :3] = 0
+    dm = DijkstraMap(walkable)
+    dm.set_square_sources((3, 3), 2)
+    dm.build()
+    result = np.array([
+        [ 999.,  999.,  999.,  1.,  1.,  1.,  1.],
+        [ 999.,  999.,  999.,  0.,  0.,  0.,  1.],
+        [ 999.,  999.,  999.,  1.,  1.,  0.,  1.],
+        [ 1.,    0.,    1.,    2.,  1.,  0.,  1.],
+        [ 1.,    0.,    1.,    1.,  1.,  0.,  1.],
+        [ 1.,    0.,    0.,    0.,  0.,  0.,  1.],
+        [ 1.,    1.,    1.,    1.,  1.,  1.,  1.]])
+    assert np.all(dm.dmap == result)
+
 #-----------------------------------------------------------------------------
 # Private C api
 #-----------------------------------------------------------------------------
