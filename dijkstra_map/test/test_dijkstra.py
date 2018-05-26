@@ -70,6 +70,30 @@ def test_simple_square():
         [ 1.,  1.,  1.,  1.,  1.,  1.,  1.]])
     assert np.all(dm.dmap == result)
 
+def test_top_corner_square():
+    walkable = np.ones((4, 4)).astype(np.uint8)
+    dm = DijkstraMap(walkable)
+    dm.set_square_sources((0, 0), 2)
+    dm.build()
+    result = np.array([
+        [ 2.,  1.,  0.,  1.],
+        [ 1.,  1.,  0.,  1.],
+        [ 0.,  0.,  0.,  1.],
+        [ 1.,  1.,  1.,  1.]])
+    assert np.all(dm.dmap == result)
+
+def test_bottom_corner_square():
+    walkable = np.ones((4, 4)).astype(np.uint8)
+    dm = DijkstraMap(walkable)
+    dm.set_square_sources((3, 3), 2)
+    dm.build()
+    result = np.array([
+        [ 1.,  1.,  1.,  1.],
+        [ 1.,  0.,  0.,  0.],
+        [ 1.,  0.,  1.,  1.],
+        [ 1.,  0.,  1.,  2.]]) 
+    assert np.all(dm.dmap == result)
+
 #-----------------------------------------------------------------------------
 # Private C api
 #-----------------------------------------------------------------------------
