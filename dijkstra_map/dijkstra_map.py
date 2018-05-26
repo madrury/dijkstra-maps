@@ -12,6 +12,23 @@ class DijkstraMap:
     def build(self):
         self.dmap = build_map(self.dmap, self.walkable, initial=self.initial)
 
+    def get_descent_path(self, source):
+        path = [source]
+        current_position = source
+        previous_height = np.inf
+        current_height = self.dmap[source]
+        while current_height < previous_height:
+            previous_height = current_height
+            for coord in adjacent_coordinates(current_position):
+                if (within_array(self.walkable, coord) 
+                    and self.walkable[coord]
+                    and self.dmap[coord] < current_height):
+                    current_position = coord
+                    current_height = self.dmap[coord]
+                    path.append(current_position)
+                    break
+        return path
+
     def set_source(self, position, *, distance=0):
         x, y = position
         if not self.walkable[x, y]:
@@ -43,3 +60,13 @@ class DijkstraMap:
             self.dmap[imin:imax, center[1] + radius] = np.where(
                 self.walkable[imin:imax, center[1] + radius],
                 distance, self.initial)
+
+
+def adjacent_coordinates(center):
+    dxdy = [(-1, 1), (0, 1), (1, 1),
+            (-1, 0),         (1, 0),
+            (-1, -1), (0, -1), (1, -1)]
+    return [(center[0] + dx, center[1] + dy) for dx, dy in dxdy]
+
+def within_array(arr, coord):
+    return 0 <= coord[0] < arr.shape[0] and 0 <= coord[1] < arr.shape[1]
