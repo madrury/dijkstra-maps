@@ -12,8 +12,12 @@ class DijskstraMap:
     def build(self):
         self.dmap = build_map(self.dmap, self.walkable, initial=self.initial)
 
-    def set_source(self, position, distance=0):
+    def set_source(self, position, *, distance=0):
         x, y = position
         if not self.walkable[x, y]:
             raise ValueError("Cannot set value in dmap at non-walkable space")
         self.dmap[x, y] = distance
+
+    def set_sources(self, *positions, distance=0):
+        for position in positions:
+            self.set_source(position, distance=0)
