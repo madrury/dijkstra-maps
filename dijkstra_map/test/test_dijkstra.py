@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from dijkstra_map import build_map
+from _dijkstra_map import build_map
 
 def test_sink():
     dmap = np.full((5, 5), 999)
