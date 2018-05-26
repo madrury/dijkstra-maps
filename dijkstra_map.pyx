@@ -4,6 +4,25 @@ cimport cython
 
 
 def build_map(dmap, walkable, initial=999):
+    """Build a dijkstra map out of an initial array and a mask of walkable
+    positions.
+
+    Parameters
+    ----------
+
+    dmap: np.array of shape (n, m) of float
+      An initial array to build the dijkstra map from.  A sentinel value in
+      this array marks the places where distances should be computed, these
+      positions will be modified by this functiion and will contain the final
+      distance values after the function returns.  Any other value is
+      interpreted as an initial condition.
+
+    walkable: np.array of shape (n, m) of int
+      Integer array acting as a mask for walkable positions.
+
+    initial: int
+      Interpreted as the sentinel value in the dmap array.
+    """
     if dmap.shape != walkable.shape:
         raise ValueError(f"dmap (shape {dmap.shape}) and walkable "
                          f"(shape {walkable.shape}) must have the same shape.")
