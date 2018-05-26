@@ -33,13 +33,17 @@ def build_map(dmap, walkable, initial=999):
 
 def _build_map(double [:, :] dmap,
                np.uint8_t [:, :] walkable, 
-               double initial=999):
+               double initial=999,
+               int max_iter = 1000):
     cdef bint updated = True
+    cdef int iter = 0
     while updated:
         updated = _update_map(dmap, walkable, initial)
+        iter = iter + 1
+        if iter == max_iter:
+            break
     return np.array(dmap)
 
-@cython.boundscheck(False)
 @cython.wraparound(False)
 cdef bint _update_map(double [:, :] dmap,
                       np.uint8_t [:, :] walkable, 
@@ -52,7 +56,6 @@ cdef bint _update_map(double [:, :] dmap,
                 updated = _update_entry(i, j, dmap, initial) or updated
     return updated 
 
-@cython.boundscheck(False)
 @cython.wraparound(False)
 cdef bint _update_entry(Py_ssize_t i, Py_ssize_t j,
                         double [:, :] dmap,
@@ -68,6 +71,7 @@ cdef bint _update_entry(Py_ssize_t i, Py_ssize_t j,
     cdef double rd = initial
     cdef double new = initial
 
+    # Horizontal and Vertical
     if i > 0 and current >= dmap[i - 1, j] + 2 :
         l = dmap[i - 1, j] + 1
     if i < dmap.shape[0] - 1 and current >= dmap[i + 1, j] + 2:
@@ -77,13 +81,13 @@ cdef bint _update_entry(Py_ssize_t i, Py_ssize_t j,
     if j < dmap.shape[1] - 1 and current >= dmap[i, j + 1] + 2:
         u = dmap[i, j + 1] + 1
     # Diagonals
-    if i > 0 and j > 0 and current >= dmap[i - 1, j] + 2:
+    if i > 0 and j > 0 and current >= dmap[i - 1, j - 1] + 2:
         ld = dmap[i - 1, j - 1] + 1
     if i > 0 and j < dmap.shape[1] - 1 and current >= dmap[i - 1, j + 1] + 2:
         lu = dmap[i - 1, j + 1] + 1
-    if i < dmap.shape[1] - 1 and j > 0 and current >= dmap[i + 1, j - 1] + 2:
+    if i < dmap.shape[0] - 1 and j > 0 and current >= dmap[i + 1, j - 1] + 2:
         rd = dmap[i + 1, j - 1] + 1
-    if (i < dmap.shape[1] - 1 and j < dmap.shape[1] - 1 and
+    if (i < dmap.shape[0] - 1 and j < dmap.shape[1] - 1 and
         current >= dmap[i + 1, j + 1] + 2):
         ru = dmap[i + 1, j + 1] + 1
 
